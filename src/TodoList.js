@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import TodoItem from './TodoItem';
+import axios from 'axios';
 import './style.css';
 
 class TodoList extends Component {
@@ -16,6 +17,38 @@ class TodoList extends Component {
         this.handleItemDelete = this.handleItemDelete.bind(this);
     }
 
+    /*
+        componentWillMount     在页面被渲染(render方法)之前执行，一般在componentWillMount中触发请求数据的方法
+        componentDidMount      也就是页面的组件渲染完毕之后(常用于调用ajax请求)，类似js中的window.onload，执行在render方法之后
+        componentWillUnmount   组件要被从界面上移除的时候，就会调用
+     */
+    componentWillMount() {
+    }
+    componentDidMount() {
+        // ajax写在这里最合适
+        axios.get('/api/todolist')
+            .then(()=>alert('success'))
+            .catch(()=>{alert('ajax error')})
+    }
+    componentWillUnmount(){
+    }
+
+    /*
+        shouldComponentUpdate   组件被更新前，自动执行(可以利用做子组件的性能优化)
+        componentWillUpdate     组件被更新前，shouldComponent执行返回true后，自动执行
+        componentDidUpdate      render执行更新之后
+    */
+    shouldComponentUpdate() {
+        return true;
+    }
+    componentWillUpdate(){
+    }
+    componentDidUpdate(){
+
+    }
+
+    // (1) 当组件的state或props改变，render函数会重新执行
+    // (2) 父组件render函数执行，其子组件的render也将重新执行
     render() {
         return (
             <Fragment>
@@ -33,7 +66,6 @@ class TodoList extends Component {
                 </ul>
             </Fragment>
 
-
         )
     }
 
@@ -41,10 +73,10 @@ class TodoList extends Component {
         return (
             this.state.list.map((item, index) => {
                 return (
-                        <TodoItem key={index}
-                                  content={item}
-                                  idx={index}
-                                  deleteItem={this.handleItemDelete}/>
+                    <TodoItem key={item}
+                              content={item}
+                              idx={index}
+                              deleteItem={this.handleItemDelete}/>
 
                     // 传参需要用一个lambda表达式将onClick包裹
                     /*<li key={index} onClick={()=>this.handleItemDelete(index)}>
