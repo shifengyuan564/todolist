@@ -24,13 +24,17 @@ class TodoList extends Component {
      */
     componentWillMount() {
     }
+
     componentDidMount() {
         // ajax写在这里最合适
-        axios.get('/api/todolist')
-            .then(()=>alert('success'))
-            .catch(()=>{alert('ajax error')})
+        axios.get('http://localhost:3000/json/todoList.json')
+            .then((res) => {
+                this.setState(() => ({list: [...res.data]}))
+            })
+            .catch(() => alert('ajax error'))
     }
-    componentWillUnmount(){
+
+    componentWillUnmount() {
     }
 
     /*
@@ -41,9 +45,11 @@ class TodoList extends Component {
     shouldComponentUpdate() {
         return true;
     }
-    componentWillUpdate(){
+
+    componentWillUpdate() {
     }
-    componentDidUpdate(){
+
+    componentDidUpdate() {
 
     }
 
@@ -65,7 +71,6 @@ class TodoList extends Component {
                     {this.getItems()}
                 </ul>
             </Fragment>
-
         )
     }
 
